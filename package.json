@@ -1,0 +1,48 @@
+{
+  "version": "0.0.1",
+  "name": "redux-router",
+  "description": "",
+  "author": " <aribouius@gmail.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/aribouius/redux-router",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aribouius/redux-router.git"
+  },
+  "bugs": {
+    "url": "https://github.com/aribouius/redux-router/issues"
+  },
+  "main": "index.js",
+  "scripts": {
+    "clean": "rm -rf lib",
+    "compile": "babel -d lib src",
+    "compile:watch": "npm run compile -- --watch",
+    "test": "mocha --compilers js:babel-core/register --recursive",
+    "test:watch": "npm run test -- --watch",
+    "lint": "eslint src",
+    "preversion": "npm run lint && npm test",
+    "version": "npm run compile && git add -A lib",
+    "postversion": "git push --follow-tags"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.4.0",
+    "babel-core": "^6.4.0",
+    "babel-plugin-add-module-exports": "^0.1.2",
+    "babel-plugin-transform-class-properties": "^6.6.0",
+    "babel-preset-es2015": "^6.3.13",
+    "babel-preset-stage-0": "^6.3.13",
+    "chai": "^3.4.1",
+    "eslint": "^3.9.1",
+    "eslint-config-airbnb-base": "^10.0.1",
+    "eslint-plugin-import": "^2.2.0",
+    "mocha": "^2.3.4",
+    "sinon": "^1.17.3"
+  },
+  "dependencies": {
+    "path-to-regexp": "^1.6.0",
+    "query-string": "^4.2.3"
+  },
+  "peerDependencies": {
+    "redux": "^3.6.0"
+  }
+}
