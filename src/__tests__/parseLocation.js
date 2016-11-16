@@ -3,12 +3,13 @@ import parse from '../parseLocation'
 
 describe('parseLocation', () => {
   describe('when given a string', () => {
-    it('returns a pathname, href, search path, and query params', () => {
-      const location = parse('/listings?type=active')
-      expect(location.href).to.eql('/listings?type=active')
+    it('returns a pathname, href, search path, hash, and query params', () => {
+      const location = parse('/listings?type=active#foo')
+      expect(location.href).to.eql('/listings?type=active#foo')
       expect(location.pathname).to.eql('/listings')
       expect(location.search).to.eql('?type=active')
       expect(location.query).to.eql({ type: 'active' })
+      expect(location.hash).to.eql('#foo')
     })
 
     it('returns an empty string for unmatched pathname', () => {
