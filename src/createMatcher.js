@@ -4,8 +4,8 @@ export default function createMatcher() {
   const cache = {}
 
   return function match(pattern, location, options = {}) {
-    const end = options.exact === false ? 0 : 1
-    const key = `${pattern}|${end}`
+    const end = options.exact
+    const key = `${pattern}|${end === false ? 0 : 1}`
 
     let matcher = cache[key]
     if (!matcher) {
