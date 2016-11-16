@@ -3,7 +3,7 @@ import pathToRegexp from 'path-to-regexp'
 export default function createMatcher() {
   const cache = {}
 
-  return function match(pattern, location, options = {}) {
+  return function matchPattern(pattern, location, options = {}) {
     const end = options.exact
     const key = `${pattern}|${end === false ? 0 : 1}`
 

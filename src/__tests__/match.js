@@ -1,7 +1,7 @@
 import { expect } from 'chai'
-import match from '../matchLocation'
+import match from '../match'
 
-describe('matchLocation', () => {
+describe('match', () => {
   it('always returns an array', () => {
     const result = match({ pathname: '/' }, [])
     expect(result).to.be.an('array')
