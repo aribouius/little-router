@@ -16,7 +16,7 @@ describe('reducer', () => {
     expect(state).to.eql(location)
   })
 
-  it(`does nothing for other actions`, () => {
+  it('does nothing for other actions', () => {
     const state = reducer(initialState, { type: 'foo' })
     expect(state).to.equal(initialState)
   })
