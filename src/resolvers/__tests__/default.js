@@ -16,17 +16,17 @@ describe('resolvers/default', () => {
   it('passes a context to each route resolver', async () => {
     const spy = sinon.spy()
     const ctx = { foo: 'foo' }
-    const routes = [{ resolve: spy }]
+    const routes = [{ bar: 'bar', resolve: spy }]
     resolve(routes, ctx)
-    expect(spy.calledWith({}, ctx)).to.equal(true)
+    expect(spy.calledWith({ bar: 'bar' }, ctx)).to.equal(true)
   })
 
-  it('returns the resolved and merged route data', async () => {
+  it('returns the resolved route', async () => {
     const routes = [{
       foo: 'foo',
       resolve: () => Promise.resolve({ bar: 'bar' }),
     }]
     const result = await resolve(routes)
-    expect(result).to.eql([{ foo: 'foo', bar: 'bar' }])
+    expect(result).to.eql([{ bar: 'bar' }])
   })
 })
