@@ -1,19 +1,19 @@
-import matchLocation from './match'
-import resolveRoutes from './resolvers/default'
+import matcher from './match'
+import resolver from './resolvers/default'
 
 export default function createRouter(routes = [], options = {}) {
   const config = {
-    match: matchLocation,
-    resolve: resolveRoutes,
+    matcher,
+    resolver,
     ...options,
   }
 
   const match = location => (
-    config.match(location, routes)
+    config.matcher(location, routes)
   )
 
   const resolve = location => (
-    config.resolve(match(location), config.context)
+    config.resolver(match(location), config.context)
   )
 
   return {

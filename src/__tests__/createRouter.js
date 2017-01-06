@@ -8,29 +8,29 @@ describe('createRoute', () => {
 
   describe('match', () => {
     it('calls the configured matcher', () => {
-      const match = sinon.spy()
-      const router = createRouter(routes, { match })
+      const matcher = sinon.spy()
+      const router = createRouter(routes, { matcher })
       router.match(location)
-      expect(match.calledWith(location)).to.equal(true)
+      expect(matcher.calledWith(location)).to.equal(true)
     })
   })
 
   describe('resolve', () => {
-    const match = () => routes
+    const matcher = () => routes
 
     it('calls the configured resolver', () => {
-      const resolve = sinon.spy()
-      const router = createRouter(routes, { match, resolve })
+      const resolver = sinon.spy()
+      const router = createRouter(routes, { matcher, resolver })
       router.resolve(location)
-      expect(resolve.calledWith(routes)).to.equal(true)
+      expect(resolver.calledWith(routes)).to.equal(true)
     })
 
     it('passes a context to the resolver', () => {
-      const resolve = sinon.spy()
+      const resolver = sinon.spy()
       const context = { bar: 'bar' }
-      const router = createRouter(routes, { match, resolve, context })
+      const router = createRouter(routes, { matcher, resolver, context })
       router.resolve(location)
-      expect(resolve.calledWith(routes, context)).to.equal(true)
+      expect(resolver.calledWith(routes, context)).to.equal(true)
     })
   })
 })
