@@ -1,14 +1,27 @@
 import parse from './parseLocation'
 import { GO, POP, PUSH, REPLACE, LOCATION_CHANGE } from './const'
 
-const change = method => location => (
-  { method, type: LOCATION_CHANGE, location: parse(location) }
+export const change = (
+  location,
+  method = POP
+) => ({
+  method,
+  type: LOCATION_CHANGE,
+  location: parse(location),
+})
+
+export const pop = location => (
+  change(location)
 )
 
-export const pop = change(POP)
-export const push = change(PUSH)
-export const replace = change(REPLACE)
+export const push = location => (
+  change(location, PUSH)
+)
 
-export const go = index => ({ index, type: GO })
+export const replace = location => (
+  change(location, REPLACE)
+)
+
+export const go = index => ({ type: GO, index })
 export const back = () => go(-1)
 export const forward = () => go(1)

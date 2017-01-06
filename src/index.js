@@ -1,2 +1,6 @@
-export { go, push, replace, back, forward } from './actions'
-export { GO, POP, PUSH, REPLACE, LOCATION_CHANGE } from './const'
+export match from './match'
+export createRouter from './createRouter'
+export reducer from './reducer'
+
+export { push, replace, go, back, forward } from './actions'
+export { LOCATION_CHANGE } from './const'
