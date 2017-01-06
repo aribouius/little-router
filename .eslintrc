@@ -5,6 +5,7 @@
     "arrow-parens": [2, "as-needed"]
   },
   "env": {
-    "mocha": true
+    "mocha": true,
+    "browser": true,
   }
 }

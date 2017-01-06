@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import reducer, { initialState } from '../reducer'
+import reducer, { initial } from '../reducer'
 import { LOCATION_CHANGE } from '../const'
 
 describe('reducer', () => {
@@ -12,12 +12,12 @@ describe('reducer', () => {
       query: { foo: 'bar' },
     }
 
-    const state = reducer(initialState, { type: LOCATION_CHANGE, location })
+    const state = reducer(initial, { type: LOCATION_CHANGE, location })
     expect(state).to.eql(location)
   })
 
   it('does nothing for other actions', () => {
-    const state = reducer(initialState, { type: 'foo' })
-    expect(state).to.equal(initialState)
+    const state = reducer(initial, { type: 'foo' })
+    expect(state).to.equal(initial)
   })
 })

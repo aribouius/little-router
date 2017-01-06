@@ -3,7 +3,7 @@ import { GO, POP, PUSH, REPLACE, LOCATION_CHANGE } from './const'
 
 export const change = (
   location,
-  method = POP
+  method = POP,
 ) => ({
   method,
   type: LOCATION_CHANGE,

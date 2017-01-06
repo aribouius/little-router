@@ -1,6 +1,6 @@
 import { LOCATION_CHANGE } from './const'
 
-export const initialState = {
+export const initial = {
   href: null,
   hash: null,
   search: null,
@@ -8,7 +8,7 @@ export const initialState = {
   query: {},
 }
 
-export default (state = initialState, action) => {
+export default (state = initial, action) => {
   switch (action.type) {
     case LOCATION_CHANGE:
       return { ...state, ...action.location }
