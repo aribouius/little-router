@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import match from '../matchRoutes'
 
-describe.only('matchRoutes', () => {
+describe('matchRoutes', () => {
   it('returns an array', () => {
     const result = match('/', [])
     expect(result).to.eql([])

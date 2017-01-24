@@ -35,7 +35,7 @@ describe('resolve', () => {
 
   it('yields child route resolution to parent routes via `next` function', () => {
     const routes = [{
-      resolve: (_, __, next) => ({
+      resolve: (_, { next }) => ({
         ...next(),
         ...route1,
       }),
