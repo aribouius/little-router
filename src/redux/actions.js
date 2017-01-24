@@ -23,5 +23,5 @@ export const replace = location => (
 )
 
 export const go = index => ({ type: GO, index })
-export const back = () => go(-1)
-export const forward = () => go(1)
+export const goBack = () => go(-1)
+export const goForward = () => go(1)

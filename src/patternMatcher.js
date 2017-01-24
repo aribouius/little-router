@@ -1,9 +1,9 @@
 import pathToRegexp from 'path-to-regexp'
 
-export default function createMatcher() {
+export default function patternMatcher() {
   const cache = {}
 
-  return function matchPattern(pattern, location, options = {}) {
+  return function matchPattern(pattern, path, options = {}) {
     const end = options.exact
     const key = `${pattern}|${end === false ? 0 : 1}`
 
@@ -14,10 +14,8 @@ export default function createMatcher() {
       cache[key] = matcher
     }
 
-    const matches = matcher.regex.exec(location.pathname)
-    if (!matches) {
-      return null
-    }
+    const matches = matcher.regex.exec(path)
+    if (!matches) return null
 
     const params = {}
     const pathname = matches.shift()
@@ -26,6 +24,6 @@ export default function createMatcher() {
       params[matcher.keys[index].name] = decodeURIComponent(value)
     })
 
-    return { pathname, params }
+    return { params, pathname }
   }
 }
