@@ -1,16 +1,16 @@
 {
   "version": "0.0.1",
-  "name": "redux-router",
+  "name": "config-router",
   "description": "",
   "author": " <aribouius@gmail.com>",
   "license": "MIT",
-  "homepage": "https://github.com/aribouius/redux-router",
+  "homepage": "https://github.com/aribouius/config-router",
   "repository": {
     "type": "git",
-    "url": "https://github.com/aribouius/redux-router.git"
+    "url": "https://github.com/aribouius/config-router.git"
   },
   "bugs": {
-    "url": "https://github.com/aribouius/redux-router/issues"
+    "url": "https://github.com/aribouius/config-router/issues"
   },
   "main": "index.js",
   "scripts": {
@@ -38,15 +38,11 @@
     "eslint-plugin-import": "^2.2.0",
     "jsdom": "^9.9.1",
     "mocha": "^3.2.0",
-    "redux": "^3.6.0",
     "sinon": "^1.17.3"
   },
   "dependencies": {
     "babel-eslint": "^7.1.1",
     "path-to-regexp": "^1.6.0",
     "query-string": "^4.2.3"
-  },
-  "peerDependencies": {
-    "redux": "^3.6.0"
   }
 }

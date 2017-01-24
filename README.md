@@ -1,9 +1,9 @@
-# redux-router
+# config-router
 
 
 ## Installation
 ```bash
-$ npm i --save redux-router
+$ npm i --save config-router
 ```
 
 ## Usage
