@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import match from '../matchRoutes'
 
-describe('matchRoutes', () => {
+describe.only('matchRoutes', () => {
   it('returns an array', () => {
     const result = match('/', [])
     expect(result).to.eql([])
@@ -38,12 +38,38 @@ describe('matchRoutes', () => {
     ])
   })
 
-  it('does not require a path for route nesting', () => {
-    const routes = [{ name: 'foo', routes: [{ path: '/bar', name: 'bar' }] }]
+  it('handles nested index routes', () => {
+    const routes = [{
+      name: 'foo',
+      path: '/',
+      routes: [{
+        path: '/',
+        name: 'bar',
+      }],
+    }]
+    const result = match('/', routes)
+    expect(result).to.eql([
+      { name: 'foo', params: {} },
+      { name: 'bar', params: {} },
+    ])
+  })
+
+  it('does not require a path for parent or index routes', () => {
+    const routes = [{
+      name: 'foo',
+      routes: [{
+        path: '/bar',
+        name: 'bar',
+        routes: [{
+          name: 'baz',
+        }],
+      }],
+    }]
     const result = match('/bar', routes)
     expect(result).to.eql([
       { name: 'foo', params: {} },
       { name: 'bar', params: {} },
+      { name: 'baz', params: {} },
     ])
   })
 
