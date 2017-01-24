@@ -1,7 +1,7 @@
 {
   "version": "0.0.1",
   "name": "config-router",
-  "description": "",
+  "description": "A configuration based universal router.",
   "author": " <aribouius@gmail.com>",
   "license": "MIT",
   "homepage": "https://github.com/aribouius/config-router",
@@ -15,13 +15,14 @@
   "main": "index.js",
   "scripts": {
     "clean": "rm -rf lib",
-    "compile": "babel -d lib src",
-    "compile:watch": "npm run compile -- --watch",
+    "build": "babel -d lib src",
+    "build:watch": "yarn run build -- --watch",
     "test": "mocha --compilers js:babel-core/register --recursive",
-    "test:watch": "npm run test -- --watch",
+    "test:watch": "yarn run test -- --watch",
     "lint": "eslint src",
-    "preversion": "npm run lint && npm test",
-    "version": "npm run compile && git add -A lib",
+    "lint:fix": "yarn run lint -- --fix",
+    "preversion": "yarn run lint && yarn run test",
+    "version": "yarn run build && git add -A lib",
     "postversion": "git push --follow-tags"
   },
   "devDependencies": {
@@ -44,5 +45,11 @@
     "babel-eslint": "^7.1.1",
     "path-to-regexp": "^1.6.0",
     "query-string": "^4.2.3"
-  }
+  },
+  "keywords": [
+    "router",
+    "routing",
+    "routes",
+    "route"
+  ]
 }
