@@ -28,9 +28,9 @@ describe('resolve', () => {
   it('provides `resolve` methods with a context', () => {
     const routes = [{
       ...route1,
-      resolve: (_, ctx = {}) => ctx,
+      resolve: (_, ctx = {}) => ctx.foo,
     }]
-    expect(resolve(routes, route2)).to.eql(route2)
+    expect(resolve(routes, { foo: 'foo' })).to.eql('foo')
   })
 
   it('yields child route resolution to parent routes via `next` function', () => {

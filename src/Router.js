@@ -6,7 +6,7 @@ export default class Router {
     this.context = context
   }
 
-  match(location) {
-    return match(location, this.routes, this.context)
+  match(path) {
+    return match(path, this.routes, this.context)
   }
 }

@@ -1,6 +1,5 @@
 import { expect } from 'chai'
 import match from '../match'
-import Location from '../Location'
 
 describe('match', () => {
   const route1 = { path: '/foo', name: 'foo' }
@@ -20,13 +19,6 @@ describe('match', () => {
   it('matches nested routes', () => {
     const result = match('/baz/baz', [route3]) || {}
     expect(result.name).to.eql('baz')
-  })
-
-  it('supplies a `location` context', () => {
-    const path = '/foo?foo=bar'
-    const location = new Location(path)
-    const result = match(path, [{ path: '/foo', resolve: (_, ctx) => ctx.location }])
-    expect(result).to.eql(location)
   })
 
   it('appends a custom context', () => {
