@@ -30,7 +30,7 @@ describe('patternMatcher', () => {
 
     it('returns pathname', () => {
       const result = matchPattern('/:foo/:bar', '/foo/bar')
-      expect(result.pathname).to.eql('/foo/bar')
+      expect(result.path).to.eql('/foo/bar')
     })
 
     it('matches pattern exactly by default', () => {

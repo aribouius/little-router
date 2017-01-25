@@ -18,10 +18,11 @@ export default function matchRoutes(pathname, routes, basePath, params = {}, res
     if (!matched) return false
 
     const nested = []
+    route.path = matched.path
     route.params = { ...params, ...matched.params }
 
     if (children) {
-      matchRoutes(pathname, children, matched.pathname, route.params, nested)
+      matchRoutes(pathname, children, route.path, route.params, nested)
     }
 
     if (exact || nested.length) {

@@ -24,6 +24,6 @@ export default function patternMatcher() {
       params[matcher.keys[index].name] = decodeURIComponent(value)
     })
 
-    return { params, pathname }
+    return { params, path: pathname }
   }
 }
