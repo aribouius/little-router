@@ -1,7 +1,7 @@
 import match from './match'
 
 export default class Router {
-  constructor(routes, context = {}) {
+  constructor({ routes, context = {} }) {
     this.routes = routes
     this.context = context
   }
