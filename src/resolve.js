@@ -1,11 +1,13 @@
 const noop = () => {}
 
-export default (routes, ctx = {}) => (
-  routes.reduceRight((next, { resolve, ...route }) => (() => {
+export default (routes, context = {}) => {
+  const ctx = { ...context }
+  return routes.reduceRight((next, { resolve, ...route }) => (() => {
     if (resolve) {
-      return resolve(route, { ...ctx, next })
+      ctx.next = next
+      return resolve(route, ctx)
     } else {
       return next === noop ? route : next()
     }
   }), noop)()
-)
+}
