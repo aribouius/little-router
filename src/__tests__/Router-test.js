@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import Router from '../Router'
+import createRouter from '../createRouter'
 
 describe('Router', () => {
   const routes = [{
@@ -10,13 +10,13 @@ describe('Router', () => {
 
   describe('match', () => {
     it('applies configured routes', () => {
-      const router = new Router({ routes })
+      const router = createRouter({ routes })
       const result = router.match('/foo') || {}
       expect(result.name).to.equal('foo')
     })
 
     it('applies configured context', () => {
-      const router = new Router({ routes, context: { bar: 'bar' } })
+      const router = createRouter({ routes, context: { bar: 'bar' } })
       const result = router.match('/foo') || {}
       expect(result.bar).to.equal('bar')
     })
