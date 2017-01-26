@@ -3,13 +3,13 @@ import match from '../matchRoutes'
 
 describe('matchRoutes', () => {
   it('returns an array', () => {
-    const result = match('/', [])
+    const result = match([], '/')
     expect(result).to.eql([])
   })
 
   it('returns matched routes', () => {
     const routes = [{ path: '/foo', name: 'foo' }]
-    const result = match('/foo', routes)
+    const result = match(routes, '/foo')
     expect(result).to.eql([{ name: 'foo', path: '/foo', params: {} }])
   })
 
@@ -18,7 +18,7 @@ describe('matchRoutes', () => {
       { path: '/foo', name: 'foo' },
       { path: '/foo', name: 'bar' },
     ]
-    const result = match('/foo', routes)
+    const result = match(routes, '/foo')
     expect(result).to.eql([{ name: 'foo', path: '/foo', params: {} }])
   })
 
@@ -31,7 +31,7 @@ describe('matchRoutes', () => {
         name: 'bar',
       }],
     }]
-    const result = match('/foo/bar', routes)
+    const result = match(routes, '/foo/bar')
     expect(result).to.eql([
       { name: 'foo', path: '/foo', params: {} },
       { name: 'bar', path: '/foo/bar', params: {} },
@@ -47,7 +47,7 @@ describe('matchRoutes', () => {
         name: 'bar',
       }],
     }]
-    const result = match('/', routes)
+    const result = match(routes, '/')
     expect(result).to.eql([
       { name: 'foo', path: '/', params: {} },
       { name: 'bar', path: '/', params: {} },
@@ -65,7 +65,7 @@ describe('matchRoutes', () => {
         }],
       }],
     }]
-    const result = match('/bar', routes)
+    const result = match(routes, '/bar')
     expect(result).to.eql([
       { name: 'foo', path: '/', params: {} },
       { name: 'bar', path: '/bar', params: {} },
@@ -83,7 +83,7 @@ describe('matchRoutes', () => {
         }],
       }],
     }]
-    const result = match('/foo/bar/baz', routes)
+    const result = match(routes, '/foo/bar/baz')
     expect(result).to.eql([
       { path: '/foo', params: { foo: 'foo' } },
       { path: '/foo/bar', params: { foo: 'foo', bar: 'bar' } },

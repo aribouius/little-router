@@ -7,6 +7,10 @@ export default class Router {
   }
 
   match(path) {
-    return match(path, this.routes, this.context)
+    return match({
+      path,
+      routes: this.routes,
+      context: this.context,
+    })
   }
 }

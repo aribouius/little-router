@@ -2,7 +2,7 @@ import patternMatcher from './patternMatcher'
 
 const matchPattern = patternMatcher()
 
-export default function matchRoutes(pathname, routes, basePath, params = {}, results = []) {
+export default function matchRoutes(routes, pathname, basePath, params = {}, results = []) {
   routes.some(props => {
     const { path = '/', routes: children, ...route } = props
     const exact = !children
@@ -22,7 +22,7 @@ export default function matchRoutes(pathname, routes, basePath, params = {}, res
     route.params = { ...params, ...matched.params }
 
     if (children) {
-      matchRoutes(pathname, children, route.path, route.params, nested)
+      matchRoutes(children, pathname, route.path, route.params, nested)
     }
 
     if (exact || nested.length) {

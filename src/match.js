@@ -1,6 +1,6 @@
 import resolve from './resolve'
 import matchRoutes from './matchRoutes'
 
-export default function match(path, routes, context = {}) {
-  return resolve(matchRoutes(path, routes), context)
+export default function match({ routes, path, context = {} }) {
+  return resolve(matchRoutes(routes, path), context)
 }
