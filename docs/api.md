@@ -1,42 +1,32 @@
 # API Reference
 
-#### `match({ routes, path, [context] })` => `any`
-Matches an array of routes to a provided URL path. An optional context object is provided to any matched routes containing a [resolve method](overview.md#route-resolution).
+### `match({ routes, path, [context] })` => `any`
+Matches an array of routes to a provided URL path. A context object may optionally be provided to pass to matched routes that define a [resolve method](overview.md#route-resolution).
 ```javascript
 import { match } from 'little-router'
-import { api } from './Api'
 
-const routes: [
-  {
-    path: '/',
-    name: 'home',
-  },
-  {
-    path: '/:slug',
-    name: 'page',
-    resolve: async (route, context) => {
-      return {
-        ...route,
-        page: await context.api.findPageBySlug(route.params.slug)
-      }
-    }
-  },
-]
+const routes = [{
+  path: '/',
+  greeting: 'Hello',
+  resolve: (route, ctx) => (
+    `${route.greeting} ${ctx.name}!`
+  )
+}]
 
-const route = await match({
-  path: '/about',
-  context: { api },
-  routes,
-})
-// => { path: '/about', name: 'page', params: { slug: 'about' }, page: { ... } }
+match({ routes, path: '/', context: { name: 'World' } })
+// => 'Hello World!'
 ```
 
-#### `createRouter({ routes, [context] })` => `router`
-Creates a new router instance bound to a given route configuration and context.
+### `createRouter({ routes, [context] })` => `router`
+Creates a router instance bound to a specific route configuration and context.
 ```javascript
 const { createRouter } from 'little-router'
 
-const router = createRouter({ ... })
-
-router.match('/some/path')
+const router = createRouter({
+  routes: [...],
+  context: {...}
+})
 ```
+
+### `router.match(path)` => `any`
+Matches a provided URL path against the routes configured on the router.
