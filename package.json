@@ -4,13 +4,13 @@
   "description": "A lightweight universal router",
   "author": " <aribouius@gmail.com>",
   "license": "MIT",
-  "homepage": "https://github.com/aribouius/config-router",
+  "homepage": "https://github.com/aribouius/little-router",
   "repository": {
     "type": "git",
-    "url": "https://github.com/aribouius/config-router.git"
+    "url": "https://github.com/aribouius/little-router.git"
   },
   "bugs": {
-    "url": "https://github.com/aribouius/config-router/issues"
+    "url": "https://github.com/aribouius/little-router/issues"
   },
   "main": "index.js",
   "scripts": {
