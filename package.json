@@ -1,7 +1,7 @@
 {
-  "version": "1.0.0",
-  "name": "config-router",
-  "description": "A configuration based universal router.",
+  "version": "1.0.1",
+  "name": "little-router",
+  "description": "A lightweight universal router",
   "author": " <aribouius@gmail.com>",
   "license": "MIT",
   "homepage": "https://github.com/aribouius/config-router",
