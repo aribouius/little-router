@@ -1,5 +1,2 @@
 src/
 test/
-yarn.lock
-.eslintrc
-.babelrc
