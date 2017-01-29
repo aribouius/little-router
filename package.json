@@ -1,5 +1,5 @@
 {
-  "version": "1.0.2",
+  "version": "1.0.3",
   "name": "little-router",
   "description": "A lightweight universal router",
   "author": " <aribouius@gmail.com>",
@@ -42,8 +42,8 @@
     "sinon": "^1.17.3"
   },
   "dependencies": {
-    "path-to-regexp": "^1.6.0",
-    "query-string": "^4.2.3"
+    "babel-runtime": "^6.22.0",
+    "path-to-regexp": "^1.6.0"
   },
   "keywords": [
     "router",
