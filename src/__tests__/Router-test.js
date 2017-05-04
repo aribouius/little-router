@@ -5,20 +5,23 @@ describe('Router', () => {
   const routes = [{
     path: '/foo',
     name: 'foo',
-    resolve: (route, ctx) => ({ ...route, ...ctx }),
+    resolve: ctx => ({
+      ...ctx.route,
+      ...ctx.custom,
+    }),
   }]
 
   describe('match', () => {
     it('applies configured routes', () => {
       const router = createRouter({ routes })
       const result = router.match('/foo') || {}
-      expect(result.name).to.equal('foo')
+      expect(result.route).to.eql(routes[0])
     })
 
     it('applies configured context', () => {
-      const router = createRouter({ routes, context: { bar: 'bar' } })
+      const router = createRouter({ routes, context: { custom: { bar: 'bar' } } })
       const result = router.match('/foo') || {}
-      expect(result.bar).to.equal('bar')
+      expect(result.route).to.eql({ ...routes[0], bar: 'bar' })
     })
   })
 })

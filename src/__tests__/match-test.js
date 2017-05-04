@@ -10,7 +10,7 @@ describe('match', () => {
     const path = '/foo'
     const routes = [route1]
     const result = match({ routes, path }) || {}
-    expect(result.name).to.eql('foo')
+    expect(result.route).to.eql(route1)
   })
 
   it('returns named route params', () => {
@@ -24,13 +24,13 @@ describe('match', () => {
     const path = '/baz/baz'
     const routes = [route3]
     const result = match({ routes, path }) || {}
-    expect(result.name).to.eql('baz')
+    expect(result.route).to.eql(route3.routes[0])
   })
 
   it('appends a custom context', () => {
     const path = '/foo'
-    const routes = [{ path, resolve: (_, ctx) => ctx.foo }]
+    const routes = [{ path, resolve: ctx => ctx.foo }]
     const result = match({ path, routes, context: { foo: 'foo' } })
-    expect(result).to.eql('foo')
+    expect(result.route).to.eql('foo')
   })
 })

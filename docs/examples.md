@@ -4,17 +4,17 @@
 ```javascript
 import { render } from 'react-dom'
 import Home from './Home'
-import About from './About'
+import NotFound from './NotFound'
 import { match } from 'little-router'
 
 const routes = [
   { path: '/', component: Home },
-  { path: '/about', component: About }
+  { path: '*', component: NotFound }
 ]
 
-const { component } = match({ routes, path: '/' })
+const { route } = match({ routes, path: '/' })
 
-render(component, document.body)
+render(route.component, document.body)
 ```
 
 ### Express
@@ -26,12 +26,12 @@ const app = express()
 
 const routes = [
   { path: '/', body: 'Hello World!' },
-  { path: '*', body: 'Not found :(' }
+  { path: '*', body: 'Sorry, this page does not exist!' }
 ]
 
 app.use((req, res) => {
-  const result = match({ routes, path: req.path })
-  res.send(result.body)
+  const { route } = match({ routes, path: req.path })
+  res.send(route.body)
 })
 
 app.listen(3000, function () {

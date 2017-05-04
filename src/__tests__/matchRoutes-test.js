@@ -10,7 +10,11 @@ describe('matchRoutes', () => {
   it('returns matched routes', () => {
     const routes = [{ path: '/foo', name: 'foo' }]
     const result = match(routes, '/foo')
-    expect(result).to.eql([{ name: 'foo', path: '/foo', params: {} }])
+    expect(result).to.eql([{
+      route: routes[0],
+      path: '/foo',
+      params: {},
+    }])
   })
 
   it('stops matching after the first exact match', () => {
@@ -19,7 +23,11 @@ describe('matchRoutes', () => {
       { path: '/foo', name: 'bar' },
     ]
     const result = match(routes, '/foo')
-    expect(result).to.eql([{ name: 'foo', path: '/foo', params: {} }])
+    expect(result).to.eql([{
+      route: routes[0],
+      path: '/foo',
+      params: {},
+    }])
   })
 
   it('matches nested routes', () => {
@@ -33,8 +41,8 @@ describe('matchRoutes', () => {
     }]
     const result = match(routes, '/foo/bar')
     expect(result).to.eql([
-      { name: 'foo', path: '/foo', params: {} },
-      { name: 'bar', path: '/foo/bar', params: {} },
+      { route: routes[0], path: '/foo', params: {} },
+      { route: routes[0].routes[0], path: '/foo/bar', params: {} },
     ])
   })
 
@@ -49,8 +57,8 @@ describe('matchRoutes', () => {
     }]
     const result = match(routes, '/')
     expect(result).to.eql([
-      { name: 'foo', path: '/', params: {} },
-      { name: 'bar', path: '/', params: {} },
+      { route: routes[0], path: '/', params: {} },
+      { route: routes[0].routes[0], path: '/', params: {} },
     ])
   })
 
@@ -67,27 +75,49 @@ describe('matchRoutes', () => {
     }]
     const result = match(routes, '/bar')
     expect(result).to.eql([
-      { name: 'foo', path: '/', params: {} },
-      { name: 'bar', path: '/bar', params: {} },
-      { name: 'baz', path: '/bar', params: {} },
+      { route: routes[0], path: '/', params: {} },
+      { route: routes[0].routes[0], path: '/bar', params: {} },
+      { route: routes[0].routes[0].routes[0], path: '/bar', params: {} },
     ])
   })
 
-  it('appends params to routes', () => {
+  it('returns route params', () => {
     const routes = [{
       path: '/:foo',
       routes: [{
         path: '/:bar',
-        routes: [{
-          path: '/:baz',
-        }],
       }],
     }]
-    const result = match(routes, '/foo/bar/baz')
+    const result = match(routes, '/foo/bar')
     expect(result).to.eql([
-      { path: '/foo', params: { foo: 'foo' } },
-      { path: '/foo/bar', params: { foo: 'foo', bar: 'bar' } },
-      { path: '/foo/bar/baz', params: { foo: 'foo', bar: 'bar', baz: 'baz' } },
+      { route: routes[0], path: '/foo', params: { foo: 'foo' } },
+      { route: routes[0].routes[0], path: '/foo/bar', params: { foo: 'foo', bar: 'bar' } },
     ])
+  })
+
+  it('returns the matched path', () => {
+    const routes = [{
+      path: '/foo',
+      routes: [{
+        path: '/bar',
+      }],
+    }]
+    const result = match(routes, '/foo/bar')
+    expect(result).to.eql([
+      { route: routes[0], path: '/foo', params: {} },
+      { route: routes[0].routes[0], path: '/foo/bar', params: {} },
+    ])
+  })
+
+  it('returns the original route object', () => {
+    const routes = [{
+      path: '/foo',
+      routes: [{
+        path: '/bar',
+      }],
+    }]
+    const result = match(routes, '/foo/bar')
+    expect(result[0].route).to.equal(routes[0])
+    expect(result[1].route).to.equal(routes[0].routes[0])
   })
 })

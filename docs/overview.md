@@ -1,7 +1,7 @@
 # Overview
-`little-router` was inspired by the route configuration used by [react-router](https://github.com/ReactTraining/react-router), and the middleware pattern implemented by frameworks such as [Express](http://expressjs.com) or [Koa](http://koajs.com).  It was built to be flexible enough to support both static route matching, as well as asynchronous route resolution/fulfillment.
+`little-router` was inspired by the route configuration used by [react-router](https://github.com/ReactTraining/react-router), and the middleware pattern implemented by frameworks such as [Express](http://expressjs.com) or [Koa](http://koajs.com).  It was built to be flexible enough to support both static route matching, as well as asynchronous route resolution.
 
-### Route Configuration
+### Route Config
 Routes are declared as an array of plain objects. Each route object can take any desired shape, with the exception of a few _special_ properties used by the router. One such property is `path`, which indicates the URL path to use when matching the route (using the [path-to-regexp](https://github.com/pillarjs/path-to-regexp) library).
 ```javascript
 const routes = [
@@ -16,8 +16,28 @@ const routes = [
 ]
 ```
 
+### Nested Routes
+Each route can optionally specify a `routes` property to list child routes.
+```javascript
+const routes = [
+  {
+    path: '/admin',
+    routes: [
+      {
+        path: '/',
+        name: 'dashboard',
+      },
+      {
+        path: '/users',
+        name: 'users'
+      }
+    ]
+  }
+]
+```
+
 ### Route Matching
-The router traverses the route configuration array until a route is found that matches the provided path. If a route is matched, the route object is returned, else `undefined`.
+The router traverses the route configuration array until a route is matched against the provided path. If a match is found, a result object containing the matched route is returned, else `undefined`.
 ```javascript
 import { match } from 'little-router'
 
@@ -25,12 +45,12 @@ const routes = [
   { path: '/about', name: 'about' }
 ]
 
-match({ routes, path: '/about' })
-// => { path: '/about', name: 'about' }
+const result = match({ routes, path: '/about' })
+// => { route: { name: 'about' } }
 ```
 
 ### Named Parameters
-Named route parameters can be accessed via a `params` property on the matched route object.
+Captured named route parameters are also returned in the result object.
 ```javascript
 import { match } from 'little-router'
 
@@ -38,46 +58,41 @@ const routes = [
   { path: '/:slug', name: 'page' }
 ]
 
-match({ routes, path: '/about' })
-// => { path: '/about', name: 'page', params: { slug: 'about' } }
+const result = match({ routes, path: '/about' })
+// => { route: { name: 'page' }, params: { slug: 'about' } }
 ```
 
 ### Route Resolution
-Each route may specify a `resolve` function, which can be used to either customize the route return value, or to perform actions required to resolve the route.  The route object is provided as the first argument.
+Routes can specify a `resolve` function to asynchronously resolve the route.  The function is passed a context argument containing the static route object, and named parameters.
 ```javascript
 import { match } from 'little-router'
 import { fetchContent } from './fetchContent'
 
 const routes = [
   {
-    path: '/',
-    resolve: () => 'Hello World!'
-  },
-  {
     path: '/about',
-    resolve: async (route) => ({
+    name: 'about',
+    resolve: async ({ route, params }) => ({
       ...route,
-      content: await fetchContent('about') // "About Page"
-    })
+      component: import(`./components/About`),
+    }),
   }
 ]
 
-match({ routes, path: '/' })
-// => 'Hello World!'
-
-await match({ routes, path: '/about' })
-// => { path: '/about', content: "About Page" }
+const result = await match({ routes, path: '/about' })
+// => { route: { name: 'about', component: About } }
 ```
 
 ### Route Context
-A context object may be provided to pass to each route's `resolve` method.
+Arbitrary data can be passed to the `route.resolve()` method via the `context` option.
+
 ```javascript
 import { match } from 'little-router'
 
 const routes = [{
   path: '/admin',
-  resolve: (route, ctx) => {
-    if (!ctx.loggedIn) {
+  resolve: ({ route, admin }) => {
+    if (!admin) {
       throw new Error('Unauthorized!')
     }
     return route
@@ -86,53 +101,34 @@ const routes = [{
 
 match({
   routes,
-  path: '/about',
+  path: '/admin',
   context: {
-    loggedIn: true
+    admin: true,
   }
 })
 ```
 
-### Route Nesting
-Routes can be nested by defining a `routes` property.
-```javascript
-const routes = [
-  {
-    path: '/admin',
-    routes: [
-      {
-        path: '/',
-        name: 'admin_dashboard',
-      },
-      {
-        path: '/users',
-        name: 'admin_users'
-      }
-    ]
-  }
-]
-```
 
 ### Middleware
-Parent routes that define a `resolve` method are responsible for resolving child routes by acting as middleware.
+Parent routes that define a `resolve` function are responsible for resolving child routes by calling a middleware style `next()` function provided by the context argument.
+
 ```javascript
 import { match } from 'little-router'
 
 const routes = [{
   path: '/admin',
-  layout: 'default',
-  resolve: (route, ctx) => {
-    const child = ctx.next()
-    return { ...route, ...child }
-  },
-  routes: [
-    {
-      path: '/',
-      view: 'dashboard',
+  resolve: ({ route, next }) => {
+    return {
+      layout: 'default',
+      ...next(),
     }
-  ]
+  },
+  routes: [{
+    path: '/',
+    view: 'dashboard',
+  }]
 }]
 
-match({ routes, path: '/admin' })
-// => { path: '/admin', layout: 'default', view: 'dashboard' }
+const result = match({ routes, path: '/admin' })
+// => { route: { layout: 'default', view: 'dashboard' } }
 ```

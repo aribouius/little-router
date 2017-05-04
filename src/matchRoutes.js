@@ -3,8 +3,8 @@ import patternMatcher from './patternMatcher'
 const matchPattern = patternMatcher()
 
 export default function matchRoutes(routes, pathname, basePath, params = {}, results = []) {
-  routes.some(props => {
-    const { path = '/', routes: children, ...route } = props
+  routes.some(route => {
+    const { path = '/', routes: children } = route
     const exact = !children
 
     let pattern
@@ -18,15 +18,18 @@ export default function matchRoutes(routes, pathname, basePath, params = {}, res
     if (!matched) return false
 
     const nested = []
-    route.path = matched.path
-    route.params = { ...params, ...matched.params }
+    const result = {
+      route,
+      path: matched.path,
+      params: { ...params, ...matched.params },
+    }
 
     if (children) {
-      matchRoutes(children, pathname, route.path, route.params, nested)
+      matchRoutes(children, pathname, result.path, result.params, nested)
     }
 
     if (exact || nested.length) {
-      return results.push(route, ...nested)
+      return results.push(result, ...nested)
     }
 
     return false

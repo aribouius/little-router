@@ -2,51 +2,72 @@ import { expect } from 'chai'
 import resolve from '../resolve'
 
 describe('resolve', () => {
-  const route1 = { foo: 'foo' }
-  const route2 = { bar: 'bar' }
-
   it('returns undefined when given empty array', () => {
-    const routes = []
-    expect(resolve(routes)).to.equal(undefined)
+    expect(resolve([])).to.equal(undefined)
+  })
+
+  it('returns the matched route and named params', () => {
+    const matches = [{ route: { name: 'foo' }, params: { bar: 'bar' } }]
+    expect(resolve(matches)).to.eql(matches[0])
   })
 
   it('returns the last matched route', () => {
-    const routes = [route1, route2]
-    expect(resolve(routes)).to.eql(route2)
+    const matches = [{ route: {} }, { route: {} }]
+    expect(resolve(matches).route).to.equal(matches[1].route)
   })
 
-  it('yields route resolution to a `resolve` method', () => {
-    const routes = [{ ...route1, resolve: () => route2 }]
-    expect(resolve(routes)).to.eql(route2)
+  it('handles a `resolve` method', () => {
+    const route = { name: 'foo' }
+    const matches = [{ route: { resolve: () => route } }]
+    expect(resolve(matches).route).to.eql(route)
   })
 
-  it('supports async `resolve` methods', async () => {
-    const routes = [{
-      ...route1,
-      resolve: async route => (
-        await new Promise(done => setTimeout(() => done(route), 10))
-      ),
-    }]
-    expect(await resolve(routes)).to.eql(route1)
+  it('handles async `resolve` methods', async () => {
+    const route = { name: 'foo' }
+    const matches = [{ route: { resolve: async () => route } }]
+    expect(await resolve(matches).route).to.eql(route)
   })
 
-  it('provides `resolve` methods with a context', () => {
-    const routes = [{
-      ...route1,
-      resolve: (_, ctx = {}) => ctx.foo,
-    }]
-    expect(resolve(routes, { foo: 'foo' })).to.eql('foo')
+  it('passes context object to resolve methods', () => {
+    const route = { resolve: ctx => ctx }
+    const matches = [{ route }]
+    expect(resolve(matches).route).to.be.a('object')
   })
 
-  it('yields child route resolution to parent routes via `next` function', () => {
-    const routes = [{
-      resolve: (_, { next }) => ({
-        ...next(),
-        ...route1,
-      }),
-    }, {
-      ...route2,
-    }]
-    expect(resolve(routes)).to.eql({ ...route1, ...route2 })
+  it('passes route to `resolve` methods', () => {
+    const route = { name: 'foo', resolve: ctx => ctx.route }
+    const matches = [{ route }]
+    expect(resolve(matches).route).to.eql(route)
+  })
+
+  it('passes path to `resolve` methods', () => {
+    const path = '/foo'
+    const route = { resolve: ctx => ctx.path }
+    const matches = [{ route, path }]
+    expect(resolve(matches).route).to.eql(path)
+  })
+
+  it('passes params to `resolve` methods', () => {
+    const params = '/foo'
+    const route = { resolve: ctx => ctx.params }
+    const matches = [{ route, params }]
+    expect(resolve(matches).route).to.eql(params)
+  })
+
+  it('passes next function to `resolve` methods', () => {
+    const route = { resolve: ctx => ctx.next }
+    const matches = [{ route }]
+    expect(resolve(matches).route).to.be.a('function')
+  })
+
+  it('yields child route resolution to next function', () => {
+    const matches = [
+      { route: { resolve: ctx => ({ ...ctx.next(), foo: 'foo' }) } },
+      { route: { bar: 'bar' } },
+    ]
+    expect(resolve(matches).route).to.eql({
+      foo: 'foo',
+      bar: 'bar',
+    })
   })
 })

@@ -1,13 +1,16 @@
 const noop = () => {}
 
-export default (routes, context = {}) => {
-  const ctx = { ...context }
-  return routes.reduceRight((next, { resolve, ...route }) => (() => {
-    if (resolve) {
-      ctx.next = next
-      return resolve(route, ctx)
+export default (matches, context = {}) => {
+  const params = {}
+
+  const route = matches.reduceRight((next, match) => (() => {
+    Object.assign(params, match.params)
+    if (match.route.resolve) {
+      return match.route.resolve({ ...context, ...match, next })
     } else {
-      return next === noop ? route : next()
+      return next === noop ? match.route : next()
     }
   }), noop)()
+
+  return route ? { route, params } : undefined
 }
