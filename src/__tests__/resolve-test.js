@@ -6,8 +6,8 @@ describe('resolve', () => {
     expect(resolve([])).to.equal(undefined)
   })
 
-  it('returns the matched route and named params', () => {
-    const matches = [{ route: { name: 'foo' }, params: { bar: 'bar' } }]
+  it('returns the matched route, named params, and index', () => {
+    const matches = [{ route: { name: 'foo' }, params: { bar: 'bar' }, index: '0' }]
     expect(resolve(matches)).to.eql(matches[0])
   })
 

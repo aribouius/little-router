@@ -1,10 +1,13 @@
 const noop = () => {}
 
 export default (matches, context = {}) => {
-  const params = {}
+  let index
+  let params = {}
 
   const route = matches.reduceRight((next, match) => (() => {
-    Object.assign(params, match.params)
+    index = match.index
+    params = { ...params, ...match.params }
+
     if (match.route.resolve) {
       return match.route.resolve({ ...context, ...match, next })
     } else {
@@ -12,5 +15,5 @@ export default (matches, context = {}) => {
     }
   }), noop)()
 
-  return route ? { route, params } : undefined
+  return route ? { route, params, index } : undefined
 }
