@@ -23,7 +23,7 @@ describe('matchRoutes', () => {
       route: routes[0],
       path: '/foo',
       params: {},
-      __key__: '0',
+      index: '0',
     }])
   })
 
@@ -108,7 +108,7 @@ describe('matchRoutes', () => {
     expect(result[1].route).to.equal(routes[0].routes[0])
   })
 
-  it('returns a index key for the route', () => {
+  it('returns a index for the route', () => {
     const routes = [{
       path: '/foo',
       routes: [{
@@ -121,8 +121,8 @@ describe('matchRoutes', () => {
       }],
     }]
     const result = match(routes, '/foo/bar/baz')
-    expect(result[0].__key__).to.equal('0')
-    expect(result[1].__key__).to.equal('0.0')
-    expect(result[2].__key__).to.equal('0.0.1')
+    expect(result[0].index).to.equal('0')
+    expect(result[1].index).to.equal('0.0')
+    expect(result[2].index).to.equal('0.0.1')
   })
 })
