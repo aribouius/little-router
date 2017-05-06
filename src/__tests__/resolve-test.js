@@ -25,7 +25,8 @@ describe('resolve', () => {
   it('handles async `resolve` methods', async () => {
     const route = { name: 'foo' }
     const matches = [{ route: { resolve: async () => route } }]
-    expect(await resolve(matches).route).to.eql(route)
+    const result = await resolve(matches)
+    expect(result.route).to.eql(route)
   })
 
   it('passes context object to resolve methods', () => {

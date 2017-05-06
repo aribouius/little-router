@@ -15,5 +15,13 @@ export default (matches, context = {}) => {
     }
   }), noop)()
 
-  return route ? { route, params, index } : undefined
+  if (!route) {
+    return undefined
+  }
+
+  if (typeof route.then === 'function') {
+    return route.then(result => ({ route: result, params, index }))
+  }
+
+  return { route, params, index }
 }
