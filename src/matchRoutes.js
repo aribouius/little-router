@@ -2,14 +2,15 @@ import patternMatcher from './patternMatcher'
 
 const matchPattern = patternMatcher()
 
-export default function matchRoutes(
+export default function matchRoutes({
   routes,
-  pathname,
+  path: pathname,
   basePath,
   params = {},
   results = [],
   baseIndex = '',
-) {
+  strict,
+}) {
   routes.some((route, index) => {
     const { path = '/', routes: children } = route
     const exact = !children
@@ -21,7 +22,7 @@ export default function matchRoutes(
       pattern = path
     }
 
-    const matched = matchPattern(pattern, pathname, { exact })
+    const matched = matchPattern(pattern, pathname, { exact, strict })
     if (!matched) return false
 
     const result = {
@@ -34,14 +35,14 @@ export default function matchRoutes(
     const nested = []
 
     if (children) {
-      matchRoutes(
-        children,
-        pathname,
-        result.path,
-        result.params,
-        nested,
-        result.index,
-      )
+      matchRoutes({
+        routes: children,
+        path: pathname,
+        basePath: result.path,
+        params: result.params,
+        baseIndex: result.index,
+        results: nested,
+      })
     }
 
     if (exact || nested.length) {

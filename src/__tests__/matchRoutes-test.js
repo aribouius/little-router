@@ -3,13 +3,13 @@ import match from '../matchRoutes'
 
 describe('matchRoutes', () => {
   it('returns an array', () => {
-    const result = match([], '/')
+    const result = match({ routes: [], path: '/' })
     expect(result).to.eql([])
   })
 
   it('returns matched routes', () => {
     const routes = [{ path: '/foo', name: 'foo' }]
-    const matches = match(routes, '/foo')
+    const matches = match({ routes, path: '/foo' })
     expect(matches[0].route).to.eql(routes[0])
   })
 
@@ -18,7 +18,7 @@ describe('matchRoutes', () => {
       { path: '/foo', name: 'foo' },
       { path: '/foo', name: 'bar' },
     ]
-    const matches = match(routes, '/foo')
+    const matches = match({ routes, path: '/foo' })
     expect(matches).to.eql([{
       route: routes[0],
       path: '/foo',
@@ -36,7 +36,7 @@ describe('matchRoutes', () => {
         name: 'bar',
       }],
     }]
-    const matches = match(routes, '/foo/bar')
+    const matches = match({ routes, path: '/foo/bar' })
     expect(matches[0].route).to.eql(routes[0])
     expect(matches[1].route).to.eql(routes[0].routes[0])
   })
@@ -50,7 +50,7 @@ describe('matchRoutes', () => {
         name: 'bar',
       }],
     }]
-    const matches = match(routes, '/')
+    const matches = match({ routes, path: '/' })
     expect(matches[0].route).to.eql(routes[0])
     expect(matches[1].route).to.eql(routes[0].routes[0])
   })
@@ -66,7 +66,7 @@ describe('matchRoutes', () => {
         }],
       }],
     }]
-    const matches = match(routes, '/bar')
+    const matches = match({ routes, path: '/bar' })
     expect(matches[0].route).to.eql(routes[0])
     expect(matches[1].route).to.eql(routes[0].routes[0])
     expect(matches[2].route).to.eql(routes[0].routes[0].routes[0])
@@ -79,7 +79,7 @@ describe('matchRoutes', () => {
         path: '/:bar',
       }],
     }]
-    const matches = match(routes, '/foo/bar')
+    const matches = match({ routes, path: '/foo/bar' })
     expect(matches[0].params).to.eql({ foo: 'foo' })
     expect(matches[1].params).to.eql({ foo: 'foo', bar: 'bar' })
   })
@@ -91,7 +91,7 @@ describe('matchRoutes', () => {
         path: '/bar',
       }],
     }]
-    const matches = match(routes, '/foo/bar')
+    const matches = match({ routes, path: '/foo/bar' })
     expect(matches[0].path).to.equal('/foo')
     expect(matches[1].path).to.equal('/foo/bar')
   })
@@ -103,7 +103,7 @@ describe('matchRoutes', () => {
         path: '/bar',
       }],
     }]
-    const result = match(routes, '/foo/bar')
+    const result = match({ routes, path: '/foo/bar' })
     expect(result[0].route).to.equal(routes[0])
     expect(result[1].route).to.equal(routes[0].routes[0])
   })
@@ -120,7 +120,7 @@ describe('matchRoutes', () => {
         }],
       }],
     }]
-    const result = match(routes, '/foo/bar/baz')
+    const result = match({ routes, path: '/foo/bar/baz' })
     expect(result[0].index).to.equal('0')
     expect(result[1].index).to.equal('0.0')
     expect(result[2].index).to.equal('0.0.1')

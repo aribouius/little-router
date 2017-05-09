@@ -42,5 +42,10 @@ describe('patternMatcher', () => {
       const result = matchPattern('/foo', '/foo/bar', { exact: false })
       expect(result).to.not.equal(null)
     })
+
+    it('optionally matches pattern non strict', () => {
+      const result = matchPattern('/foo', '/foo/', { strict: false })
+      expect(result).to.not.equal(null)
+    })
   })
 })

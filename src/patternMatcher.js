@@ -3,14 +3,14 @@ import pathToRegexp from 'path-to-regexp'
 export default function patternMatcher() {
   const cache = {}
 
-  return function matchPattern(pattern, path, options = {}) {
-    const end = options.exact
+  return function matchPattern(pattern, path, { exact, strict = true } = {}) {
+    const end = exact
     const key = `${pattern}|${end === false ? 0 : 1}`
 
     let matcher = cache[key]
     if (!matcher) {
       const keys = []
-      matcher = { keys, regex: pathToRegexp(pattern, keys, { end, strict: true }) }
+      matcher = { keys, regex: pathToRegexp(pattern, keys, { end, strict }) }
       cache[key] = matcher
     }
 
