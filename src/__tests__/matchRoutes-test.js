@@ -1,5 +1,6 @@
 import { expect } from 'chai'
 import match from '../matchRoutes'
+import patternMatcher from '../patternMatcher'
 
 describe('matchRoutes', () => {
   it('returns an array', () => {
@@ -124,5 +125,24 @@ describe('matchRoutes', () => {
     expect(result[0].index).to.equal('0')
     expect(result[1].index).to.equal('0.0')
     expect(result[2].index).to.equal('0.0.1')
+  })
+
+  it('matches nested routes when not strict', () => {
+    const routes = [{
+      path: '/foo',
+      name: 'foo',
+      routes: [{
+        path: '/bar',
+        name: 'bar',
+      }],
+    }]
+    const matches = match({
+      routes,
+      path: '/foo/bar/',
+      strict: false,
+      matcher: patternMatcher(),
+    })
+    expect(matches[0].route).to.eql(routes[0])
+    expect(matches[1].route).to.eql(routes[0].routes[0])
   })
 })
