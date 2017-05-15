@@ -28,6 +28,11 @@ describe('patternMatcher', () => {
       expect(result.params).to.eql({ foo: 'foo', bar: 'bar' })
     })
 
+    it('returns undefined for unmatched optional named params', () => {
+      const result = matchPattern('/:foo/:bar?', '/foo')
+      expect(result.params).to.eql({ foo: 'foo', bar: undefined })
+    })
+
     it('returns pathname', () => {
       const result = matchPattern('/:foo/:bar', '/foo/bar')
       expect(result.path).to.eql('/foo/bar')

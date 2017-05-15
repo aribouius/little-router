@@ -21,7 +21,7 @@ export default function patternMatcher() {
     const pathname = matches.shift()
 
     matches.forEach((value, index) => {
-      params[matcher.keys[index].name] = decodeURIComponent(value)
+      params[matcher.keys[index].name] = value ? decodeURIComponent(value) : value
     })
 
     return { params, path: pathname }
