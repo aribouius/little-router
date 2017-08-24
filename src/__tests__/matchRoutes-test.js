@@ -145,4 +145,29 @@ describe('matchRoutes', () => {
     expect(matches[0].route).to.eql(routes[0])
     expect(matches[1].route).to.eql(routes[0].routes[0])
   })
+
+  it.only('', () => {
+    const routes = [{
+      path: '/foo',
+      routes: [
+        {
+          path: /^\/zip\-\d{5}/,
+          name: 'zip',
+        },
+        {
+          path: /\-neighborhood/,
+          name: 'hood',
+        },
+      ],
+    }]
+
+    const matches = match({
+      routes,
+      path: '/foo/ga/buckhead-neighborhood/apartments',
+      strict: false,
+      matcher: patternMatcher(),
+    })
+
+    console.log('\n\n', matches)
+  })
 })

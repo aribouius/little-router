@@ -23,6 +23,8 @@ export default function matchRoutes({
       pattern = path
     }
 
+    console.log(typeof pattern, pattern)
+
     const matched = matcher(pattern, pathname, { exact, strict })
     if (!matched) return false
 
